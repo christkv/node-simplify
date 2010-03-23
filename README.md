@@ -24,7 +24,7 @@ Either just grab the code on
 
 or use the kiwi package manager 
 
-    kiwi install node-simplify
+    kiwi install simplify
 
 
 Defining a Serial Flow

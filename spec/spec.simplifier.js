@@ -68,7 +68,34 @@ describe 'Simplifier'
       // Trigger mock timer to start the execution
       tick(100);                
     end
-  end
+
+    it 'Should execute a single method in serial'
+      // Keep track of running
+      var running = true;
+    
+      //
+      //  Execute all the functions and feed results into final method
+      //  
+      new simplifier.Simplifier().execute(
+        // Flows to execute
+        function(callback) { callback(null, {doc:'requestDoc'}); }, 
+        // All results coming back are arrays function1 [err, doc] function2 [err, doc1, doc2]
+        function(err, requestDocResult) {  
+          err.should.be_null
+          requestDocResult.doc.should.eql "requestDoc"
+          // Signal test finished
+          running = false;
+        }
+      );       
+
+      var intervalId = setInterval(function() {
+        while(running) {}
+        clearInterval(intervalId);
+      }, 100);             
+      // Trigger mock timer to start the execution
+      tick(100);                
+    end
+  end  
   
   /** 
     Parallel flow execution
